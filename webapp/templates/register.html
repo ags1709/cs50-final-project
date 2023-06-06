@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}Register Account{% endblock %}
+
+{% block main %}
+<form action="/register" method="post">
+    <div class="container mt-5 mb-3">
+        <div class="row justify-content-center">
+            <div class="col-md-3">
+                <label for="username" class="form-label">Username</label>
+                <input class="form-control" id="username" type="text" name="username" placeholder="Enter username" autofocus required>
+            </div>
+        </div>
+    </div>
+    <div class="container mb-3">
+        <div class="row justify-content-center">
+            <div class="col-md-3">
+                <label for="password" class="form-label">Password</label>
+                <input class="form-control" id="password" type="password" name="password" placeholder="Enter password" required>
+            </div>
+        </div>
+    </div>
+    <div class="container mb-3">
+        <div class="row justify-content-center">
+            <div class="col-md-3">
+                <label for="confirmation" class="form-label">Confirm password</label>
+                <input class="form-control" id="confirmation" type="password" name="confirmation" placeholder="Enter password (again)" required>
+            </div>
+        </div>
+    </div>
+    <div class="container text-center">
+        <button class="btn btn-secondary" type="submit" value="register">Register Account</button>
+    </div>
+</form>
+{% endblock %}
