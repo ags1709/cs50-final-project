@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine, text
-from config import connection_string
+from .config import connection_string
 
 connection_string = connection_string
 engine = create_engine(
