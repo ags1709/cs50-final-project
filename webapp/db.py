@@ -7,18 +7,19 @@ engine = create_engine(
 )
 
 
-def select_data(query):
+def select_data(query, **kwargs):
     with engine.connect() as con:
-        result = con.execute(text(f"{query}")).all()
-
-        results_list =  []
+        stmt = text(query)
+        result = con.execute(stmt, kwargs).all()
+        results_list = []
         for row in result:
             results_list.append(row._asdict())
         return results_list
 
 
-def update_db(query):
+def update_db(query, **kwargs):
     with engine.connect() as con:
-        con.execute(text(f"{query}"))
+        stmt = text(query)
+        con.execute(stmt, kwargs)
         con.commit()
-    return
+        return
