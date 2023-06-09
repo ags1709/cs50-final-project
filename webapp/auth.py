@@ -12,7 +12,7 @@ def login():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        user = select_data("SELECT * FROM users WHERE username = :username", username=username)[0]
+        user = select_data("SELECT * FROM users WHERE username = :username", username=username)
 
         # Validate input
         if not username:
@@ -24,13 +24,13 @@ def login():
         elif not user:
             # Throw error
             flash("User does not exist", category="error")
-        elif not check_password_hash(password, user["hash"]):
+        elif not check_password_hash(user[0]["hash"], password):
             # Throw error
             flash("Incorrect password", category="error")
         else:
-            session["user_id"] = user["id"]
+            session["user_id"] = user[0]["id"]
             return redirect("/")
-        redirect("/login")
+        return redirect("/login")
     else:
         return render_template("login.html")
 
@@ -83,4 +83,8 @@ def register():
 
 @auth.route("/logout")
 def logout():
-    return "This will log you out"
+    # Clears session of users id
+    session.clear()
+    
+    # Redirects user
+    return redirect("/login")
