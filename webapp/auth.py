@@ -46,9 +46,10 @@ def register():
                 hash=password_hash,
                 date=DATE,
             )
+            # Redirect user to homepage and flash success message
             flash("Account created", category="success")
             return redirect("/")
-            # Redirect user to homepage
+        # If error, redirect back to register page
         return redirect("/register")
 
     # Method was "GET" so render register page
