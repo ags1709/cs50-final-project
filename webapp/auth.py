@@ -86,6 +86,6 @@ def register():
 def logout():
     # Clears session of users id
     session.clear()
-    
+    flash("Logged out", category="success")
     # Redirects user
     return redirect("/login")
