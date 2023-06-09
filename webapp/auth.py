@@ -28,6 +28,7 @@ def login():
             # Throw error
             flash("Incorrect password", category="error")
         else:
+            flash("Logged in", category="success")
             session["user_id"] = user[0]["id"]
             return redirect("/")
         return redirect("/login")
