@@ -1,11 +1,14 @@
 {% extends "layout.html" %}
 
-{% block scripts %}
-    <script src="../static/index_script.js" defer></script>
-{% endblock %}
+{% block scripts %}<script src="../static/index_script.js" defer></script>{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="../static/index_style.css">{% endblock %}
+
 {% block title %}Homepage{% endblock %}
 
 {% block main %}
-    <h1>This is the homepage</h1>
+<main id="content-container">
+        <h1>This is the homepage</h1>
+        <div id="canvas"></div>
+</main>
 {% endblock %}
 

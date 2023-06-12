@@ -1,0 +1,16 @@
+#content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#canvas {
+    border: 1px solid black;
+    display: grid;
+}
+
+.pixel {
+
+    border:1px solid black
+}
