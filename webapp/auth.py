@@ -29,7 +29,7 @@ def login():
             flash("Incorrect password", category="error")
         else:
             flash("Logged in", category="success")
-            session["user_id"] = user[0]["id"]
+            session["user_id"] = user[0]["user_id"]
             return redirect("/")
         return redirect("/login")
     else:
@@ -66,7 +66,7 @@ def register():
         # Insert user into database
         else:
             update_db(
-                "INSERT INTO users (username, hash, account_creation_date) VALUES(:username, :hash, :date)",
+                "INSERT INTO users (username, hash, date) VALUES(:username, :hash, :date)",
                 username=username,
                 hash=password_hash,
                 date=DATE,
