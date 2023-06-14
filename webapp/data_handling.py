@@ -36,3 +36,6 @@ def handle_data():
         # Create response to javascript
         response = {"message": "Data processed succesfully"}
         return jsonify(response)
+    else:
+        user_pixel_art = select_data("SELECT * FROM pictures WHERE user_id = :id", id=session["user_id"])
+        return jsonify(user_pixel_art)
