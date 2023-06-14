@@ -62,7 +62,7 @@ function savePixelArt() {
         pixelData: pixelData
     };
     // send HTTP request to URL
-    fetch("/save-pixel-art", {
+    fetch("/api/data", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

@@ -7,9 +7,9 @@ import json
 data_handling = Blueprint("data_handling", __name__)
 
 
-@data_handling.route("/save-pixel-art", methods=["GET", "POST"])
+@data_handling.route("/api/data", methods=["GET", "POST"])
 @login_required
-def save_pixel_art():
+def handle_data():
     if request.method == "POST":
         # Get picture data
         data = request.get_json()
