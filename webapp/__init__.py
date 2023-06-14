@@ -11,8 +11,10 @@ def create_app(test_config=None):
 
     from webapp.auth import auth
     from webapp.views import views
+    from webapp.data_handling import data_handling
 
     app.register_blueprint(auth)
     app.register_blueprint(views)
+    app.register_blueprint(data_handling)
     
     return app

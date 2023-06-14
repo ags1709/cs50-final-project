@@ -1,13 +1,13 @@
 let gridSize = 32;
 let canvasSize = 600;
 let pixelSize = canvasSize / gridSize;
-pixelData = [] // Array to store pixeldata
+let pixelData = [] // Array to store pixeldata
 
 let canvas = document.querySelector("#canvas");
+let saveButton = document.querySelector("#save-button");
 
 // Define metadata
-let title = "";
-let pixelCount = gridSize ** 2;
+let title = "myPixelArt";
 
 // Configure canvas 
 canvas.style.width = `${canvasSize}px`
@@ -17,6 +17,8 @@ canvas.style.gridTemplateColumns = `repeat(${gridSize}, ${pixelSize}px)`
 
 // Add pixels to canvas
 addPixels()
+
+saveButton.addEventListener("click", savePixelArt);
 
 // Enable coloring pixels by clicking
 canvas.addEventListener("mousedown", (e) => {
@@ -51,4 +53,29 @@ function addPixels() {
 function updatePixelData(pixel) {
     const index = Array.from(pixel.parentNode.children).indexOf(pixel);
     pixelData[index] = "#000000" // Update color of pixel
+}
+
+function savePixelArt() {
+    const dataToSend = {
+        title: title,
+        gridSize: gridSize,
+        pixelData: pixelData
+    };
+    // send HTTP request to URL
+    fetch("/save-pixel-art", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataToSend)
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        // Handle server response
+        console.log(responseData)
+    })
+    .catch(error => {
+        // Handle errors
+        console.error('Error', error);
+    });
 }
