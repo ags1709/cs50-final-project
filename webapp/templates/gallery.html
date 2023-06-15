@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block scripts %}<script src="../static/gallery_script.js" defer></script>{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="../static/gallery_style.css">{% endblock %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block main %}
+<h1>Gallery</h1>
+<main id="gallery-container">
+    {% for art in user_pixel_art %}
+    <div class="canvas-containers">
+            <h6>{{ art["title"] }}</h6>
+            <div class="canvas"></div>
+            <div class="button-containers">
+                <button>Button1</button>
+                <button>Button2</button>
+            </div>
+        </div>
+    {% endfor %}
+</main>
+{% endblock %}

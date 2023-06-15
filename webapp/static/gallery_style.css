@@ -1,0 +1,32 @@
+body {
+    text-align: center;
+}
+
+#gallery-container {
+    display: grid;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.canvas-containers {
+    height: 640px;
+    display: flex;
+    flex-direction: column;
+}
+
+.canvas {
+    display: grid;
+    height: 600px;
+    width: 600px;
+    border: 1px solid black;
+    box-sizing: border-box;
+}
+
+.button-containers {
+    text-align: center;
+}
+
+.pixel {
+    box-sizing: border-box;
+}
+
