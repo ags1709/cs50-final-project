@@ -6,6 +6,7 @@ body {
     display: grid;
     justify-content: center;
     margin-top: 50px;
+    margin-bottom: 100px;
 }
 
 .canvas-containers {
@@ -24,6 +25,7 @@ body {
 
 .button-containers {
     text-align: center;
+    margin-top: 10px;
 }
 
 .pixel {

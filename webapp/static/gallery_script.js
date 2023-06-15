@@ -12,6 +12,7 @@ fetch('/api/data')
 .then(data => {
     serverData = data;
     processServerData();
+    console.log(serverData.length)
 })
 .catch(error => {
     console.error(error);
@@ -19,7 +20,7 @@ fetch('/api/data')
 
 
 function processServerData() {
-    galleryContainer.style.gridTemplateRows = `repeat(${serverData.length}, ${canvasSize}px)`;
+    galleryContainer.style.gridTemplateRows = `repeat(${serverData.length/2}, ${canvasSize}px)`;
     for (let i = 0; i < arrayOfCanvas.length; i++) {
         canvas = arrayOfCanvas[i];
         pixelData = JSON.parse(serverData[i]["pixeldata"]);
