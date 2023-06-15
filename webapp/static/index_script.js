@@ -25,7 +25,6 @@ canvas.addEventListener("mousedown", (e) => {
     e.preventDefault()
     if (e.target.classList.contains("pixel")) {
         e.target.style.backgroundColor = "#000000";
-        updatePixelData(e.target);
     }
 })
 // Enable continous painting
@@ -33,7 +32,6 @@ canvas.addEventListener("mouseover", (e) => {
     e.preventDefault()
     if (e.buttons === 1 && e.target.classList.contains("pixel")) {
         e.target.style.backgroundColor = "#000000";
-        updatePixelData(e.target);
     }
 })
 
@@ -45,17 +43,20 @@ function addPixels() {
     for (let i = 0; i < gridSize ** 2; i++) {
         const pixel = document.createElement("div");
         pixel.classList.add("pixel");
-        pixelData.push("#FFFFFF");
+        // pixelData.push("#FFFFFF");
         canvas.appendChild(pixel);
     }
 }
 
-function updatePixelData(pixel) {
-    const index = Array.from(pixel.parentNode.children).indexOf(pixel);
-    pixelData[index] = "#000000" // Update color of pixel
-}
 
 function savePixelArt() {
+    // Put the color of each pixel into a pixelData array
+    pixels = document.querySelectorAll(".pixel")
+    pixels.forEach((pixel) => {
+        pixelColor = pixel.style.backgroundColor
+        pixelData.push(pixelColor)
+    })
+    // Define data to send to server
     const dataToSend = {
         title: title,
         gridSize: gridSize,
