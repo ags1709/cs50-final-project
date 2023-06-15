@@ -17,9 +17,7 @@ def save_data():
     pixel_data = data["pixelData"]
     pixel_data_str = json.dumps(pixel_data)
     # Define additional data
-    user = select_data(
-        "SELECT * FROM users WHERE user_id = :id", id=session["user_id"]
-    )
+    user = select_data("SELECT * FROM users WHERE user_id = :id", id=session["user_id"])
     user_id = user[0]["user_id"]
     DATE = date.today()
     # Insert data into database
@@ -36,8 +34,25 @@ def save_data():
     return jsonify(response)
 
 
+@data_handling.route("/api/delete_data", methods=["POST"])
+@login_required
+def delete_data():
+    # Get id of pixel art to be deleted
+    data = request.get_json()
+    # Delete pixel art
+    update_db(
+        "DELETE FROM pictures WHERE user_id = :user_id AND picture_id = :picture_id",
+        user_id=session["user_id"],
+        picture_id=data
+    )
+
+    response = {"message": "Art deleted succesfully"}
+    return jsonify(response)
+
 @data_handling.route("/api/fetch_data")
 @login_required
 def fetch_data():
-    user_pixel_art = select_data("SELECT * FROM pictures WHERE user_id = :id", id=session["user_id"])
+    user_pixel_art = select_data(
+        "SELECT * FROM pictures WHERE user_id = :id", id=session["user_id"]
+    )
     return jsonify(user_pixel_art)
