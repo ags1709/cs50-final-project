@@ -6,17 +6,20 @@ galleryContainer.style.gap = "100px 10vw";
 let serverData;
 let arrayOfCanvas = Array.from(document.querySelectorAll(".canvas"))
 
+fetchData()
 // Get data from server and process it
-fetch('/api/data')
-.then(response => response.json())
-.then(data => {
+function fetchData() {
+    fetch('/api/fetch_data')
+    .then(response => response.json())
+    .then(data => {
     serverData = data;
     processServerData();
     console.log(serverData.length)
-})
-.catch(error => {
+    })
+    .catch(error => {
     console.error(error);
-})
+    })
+}
 
 
 function processServerData() {
