@@ -1,18 +1,19 @@
+// Global variables
 let canvasSize = 600;
-let galleryContainer = document.querySelector("#gallery-container");
-galleryContainer.style.gridTemplateColumns = `repeat(2, ${canvasSize}px)`;
-galleryContainer.style.gap = "100px 10vw";
 
-let arrayOfCanvas = Array.from(document.querySelectorAll(".canvas"))
+let galleryContainer = document.querySelector("#gallery-container");
 let deleteButtons = document.querySelectorAll(".delete-button")
 let editButtons = document.querySelectorAll(".edit-button")
+let arrayOfCanvas = Array.from(document.querySelectorAll(".canvas"))
 
+// Implement functionality for delete buttons
 deleteButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
         deleteCanvas(e)
     })
 })
 
+// Implement functionality for edit buttons
 editButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
         canvas = e.target.parentNode.previousElementSibling;
@@ -21,8 +22,9 @@ editButtons.forEach((button) => {
     })
 })
 
-
+// Set up and load all the canvasses and the art to be displayed in them
 fetchData(setUpPage)
+
 
 
 
@@ -31,7 +33,7 @@ function fetchData(processDataFunction) {
     fetch('/api/fetch_data')
         .then(response => response.json())
         .then(data => {
-            // Process the data
+            // Use fetched data to setup page
             processDataFunction(data)
         })
         .catch(error => {
@@ -39,19 +41,22 @@ function fetchData(processDataFunction) {
         })
 }
 
-// Loads all the users pictures into canvasses
+
+// Load and configure all canvasses and fill them with the users pixel art
 function setUpPage(data) {
+    // configures container that holds all canvasses
+    galleryContainer.style.gridTemplateColumns = `repeat(2, ${canvasSize}px)`;
     galleryContainer.style.gridTemplateRows = `repeat(${data.length / 2}, ${canvasSize}px)`;
+
     // loop through all canvasses, configure them and load pixel art into them
     for (let i = 0; i < arrayOfCanvas.length; i++) {
         canvas = arrayOfCanvas[i];
-        // Set id of canvas to equal pixel arts id, for use in deleteCanvas function
+        // Set id of canvas to equal loaded pixel arts id, for use in other functions
         pixelArtId = data[i]["picture_id"]
         canvas.id = pixelArtId
         // Parse the necessary server data
         pixelData = JSON.parse(data[i]["pixeldata"]);
         gridSize = JSON.parse(data[i]["gridsize"])
-
         // Configure the canvas properly
         configureCanvas(canvas, gridSize);
         // Load pixel art into canvas
@@ -60,6 +65,7 @@ function setUpPage(data) {
 }
 
 
+// Load a piece of pixelart into a canvas
 function loadPixelArt(canvas, pixelData) {
     for (let j = 0; j < pixelData.length; j++) {
         const pixel = document.createElement("div");
@@ -70,6 +76,7 @@ function loadPixelArt(canvas, pixelData) {
 }
 
 
+// Configure a canvas depending on gridsize
 function configureCanvas(canvas, gridsize) {
     pixelSize = (canvasSize - 2) / gridsize
     canvas.style.gridTemplateColumns = `repeat(${gridsize}, ${pixelSize}px)`
@@ -93,7 +100,6 @@ function deleteCanvas(e) {
         // Handle response from server
         .then(response => response.json())
         .then(responseData => {
-            // console.log(responseData)
             location.reload()
         })
         // Handle errors
@@ -101,5 +107,3 @@ function deleteCanvas(e) {
             console.error('Error', error)
         })
 }
-
-

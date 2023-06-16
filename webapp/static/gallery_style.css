@@ -7,6 +7,7 @@ body {
     justify-content: center;
     margin-top: 50px;
     margin-bottom: 100px;
+    gap: 100px 10vw;
 }
 
 .canvas-containers {
