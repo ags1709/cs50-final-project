@@ -17,19 +17,17 @@ canvas.style.gridTemplateRows = `repeat(${gridSize}, ${pixelSize}px)`
 canvas.style.gridTemplateColumns = `repeat(${gridSize}, ${pixelSize}px)`
 
 
-// if a pixelArtId is present in the URL, we load the pixel art, otherwise load empty canvas
+// if a pixelArtId is present in the URL, we load that pixel art, otherwise load empty canvas
 if (pixelArtIdToLoad) {
-    fetchData(loadPixelArt, pixelArtIdToLoad)
+    serverInteraction("/api/fetch_data", pixelArtIdToLoad, loadPixelArt)
 }
 else {
     addPixels()
 }
 
 
-let titleField = document.querySelector("#title")
-
 // Saves art on click of save button
-// saveButton.addEventListener("click", savePixelArt);
+let titleField = document.querySelector("#title")
 let saveButton = document.querySelector("#save-button");
 saveButton.addEventListener("click", (e) => {
     title = titleField.value
@@ -37,58 +35,10 @@ saveButton.addEventListener("click", (e) => {
         // Throw error
     }
     else {
-        // savePixelArt()
-        saveOrUpdate(title)
+        // save or update existing art depending on whether title exists in users gallery or not
+        serverInteraction("/api/check_data", title, saveOrUpdate)
     }
-
 });
-
-// Checks if title already exists, if it does, updates the art, if not, saves it
-function saveOrUpdate(title) {
-    fetch("/api/check_data", {
-        method: 'POST',
-        headers: {
-            'Content-Type': "application/json"
-        },
-        body: JSON.stringify(title)
-    })
-        .then(response => response.json())
-        .then(responseData => {
-            if (responseData) {
-                // If title exists, update the art
-                replacePixelArt()
-            }
-            else {
-                // If it doesn't, just save it
-                savePixelArt()
-            }
-        })
-        .catch(error => {
-            console.error('Error', error)
-        })
-}
-
-function replacePixelArt() {
-    recordPixels()
-    dataToSend = {
-        title: title,
-        pixelData: pixelData
-    }
-
-    fetch("/api/replace_data", {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(dataToSend)
-    })
-        .then(response => response.json())
-        .then(responseData => {
-            // handle data
-            console.log(responseData)
-        })
-}
-
 
 // Enable coloring pixels by clicking
 canvas.addEventListener("mousedown", (e) => {
@@ -107,71 +57,25 @@ canvas.addEventListener("mouseover", (e) => {
 
 
 
-// Define function to fill canvas with pixels
-function addPixels() {
-    canvas.replaceChildren();
-    pixelData = []; // Reset pixel data
-
-    for (let i = 0; i < gridSize ** 2; i++) {
-        const pixel = document.createElement("div");
-        pixel.classList.add("pixel");
-        // pixelData.push("#FFFFFF");
-        canvas.appendChild(pixel);
-    }
-}
-
-function recordPixels() {
-    pixelData = []
-    pixels = document.querySelectorAll(".pixel")
-    pixels.forEach((pixel) => {
-        pixelColor = pixel.style.backgroundColor
-        pixelData.push(pixelColor)
-    })
-}
-
-function savePixelArt() {
-    // Put the color of each pixel into a pixelData array
-    recordPixels()
-    // Define data to send to server
-    const dataToSend = {
-        title: title,
-        gridSize: gridSize,
-        pixelData: pixelData
-    };
-    // send HTTP request to URL
-    fetch("/api/save_data", {
+function serverInteraction(routeToCall, dataToPost, dataProcessingFunction) {
+    // preFetchFunction()
+    console.log(dataToPost)
+    fetch(routeToCall, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dataToSend)
-    })
-    .then(response => response.json())
-    .then(responseData => {
-        // Handle server response
-        console.log(responseData)
-    })
-    .catch(error => {
-        // Handle errors
-        console.error('Error', error);
-    });
-}
-
-// Fetches a specific piece of pixel art from the server, and loads it
-function fetchData(handleDataFunction, pixelArtId) {
-    fetch("/api/fetch_data", {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(pixelArtId)
+    },
+        body: JSON.stringify(dataToPost)
     })
         .then(response => response.json())
         .then(responseData => {
-            // Handle data
-            handleDataFunction(responseData)
+            dataProcessingFunction(responseData)
+        })
+        .catch(error => {
+            console.error('Error', error)
         })
 }
+
 
 //Loads a piece of pixel art into the canvas
 function loadPixelArt(data) {
@@ -190,4 +94,44 @@ function loadPixelArt(data) {
         pixel.classList.add("pixel")
         canvas.appendChild(pixel);
     }
+}
+
+
+function saveOrUpdate(bool) {
+    if (bool) {
+        recordPixels()
+        replacementData = {title: title, pixelData: pixelData}
+        serverInteraction("/api/replace_data", replacementData, console.log)
+    }
+    else {
+        recordPixels()
+        saveData = { title: title, gridSize: gridSize, pixelData: pixelData }
+        serverInteraction("/api/save_data", saveData, console.log)
+    }
+}
+
+
+// Fill canvas with pixels
+function addPixels() {
+    canvas.replaceChildren();
+    pixelData = []; // Reset pixel data
+
+    for (let i = 0; i < gridSize ** 2; i++) {
+        const pixel = document.createElement("div");
+        pixel.classList.add("pixel");
+        pixel.style.backgroundColor = "#FFFFFF"
+        canvas.appendChild(pixel);
+    }
+}
+
+
+// Put pixels in pixel array for saving
+function recordPixels() {
+    pixelData = []
+    pixels = document.querySelectorAll(".pixel")
+    pixels.forEach((pixel) => {
+        pixelColor = pixel.style.backgroundColor
+        pixelData.push(pixelColor)
+    })
+    console.log("Pixels recorded")
 }
