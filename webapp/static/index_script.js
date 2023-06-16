@@ -25,7 +25,7 @@ addPixels()
 
 // if the pixelArtId was present in the URL, we load the pixel art
 if (pixelArtIdToLoad) {
-    loadPixelArt(pixelArtIdToLoad)
+    fetchData(loadPixelArt, pixelArtIdToLoad)
 }
 
 saveButton.addEventListener("click", savePixelArt);
@@ -91,7 +91,8 @@ function savePixelArt() {
     });
 }
 
-function loadPixelArt(pixelArtId) {
+// Fetches a specific piece of pixel art from the server, and handles the data
+function fetchData(handleDataFunction, pixelArtId) {
     fetch("/api/fetch_data", {
         method: 'POST',
         headers: {
@@ -102,11 +103,12 @@ function loadPixelArt(pixelArtId) {
         .then(response => response.json())
         .then(responseData => {
             // Handle data
-            handleLoadData(responseData)
+            handleDataFunction(responseData)
         })
 }
 
-function handleLoadData(data) {
+//Loads a piece of pixel art into the canvas
+function loadPixelArt(data) {
     let pixelArtData = JSON.parse(data[0]["pixeldata"])
     // configure canvas to fit the loaded pixelArt
     gridSize = data[0]["gridsize"]
