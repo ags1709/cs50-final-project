@@ -25,9 +25,70 @@ else {
     addPixels()
 }
 
+
+let titleField = document.querySelector("#title")
+
 // Saves art on click of save button
+// saveButton.addEventListener("click", savePixelArt);
 let saveButton = document.querySelector("#save-button");
-saveButton.addEventListener("click", savePixelArt);
+saveButton.addEventListener("click", (e) => {
+    title = titleField.value
+    if (!title) {
+        // Throw error
+    }
+    else {
+        // savePixelArt()
+        saveOrUpdate(title)
+    }
+
+});
+
+// Checks if title already exists, if it does, updates the art, if not, saves it
+function saveOrUpdate(title) {
+    fetch("/api/check_data", {
+        method: 'POST',
+        headers: {
+            'Content-Type': "application/json"
+        },
+        body: JSON.stringify(title)
+    })
+        .then(response => response.json())
+        .then(responseData => {
+            if (responseData) {
+                // If title exists, update the art
+                replacePixelArt()
+            }
+            else {
+                // If it doesn't, just save it
+                savePixelArt()
+            }
+        })
+        .catch(error => {
+            console.error('Error', error)
+        })
+}
+
+function replacePixelArt() {
+    recordPixels()
+    dataToSend = {
+        title: title,
+        pixelData: pixelData
+    }
+
+    fetch("/api/replace_data", {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(dataToSend)
+    })
+        .then(response => response.json())
+        .then(responseData => {
+            // handle data
+            console.log(responseData)
+        })
+}
+
 
 // Enable coloring pixels by clicking
 canvas.addEventListener("mousedown", (e) => {
@@ -45,6 +106,7 @@ canvas.addEventListener("mouseover", (e) => {
 })
 
 
+
 // Define function to fill canvas with pixels
 function addPixels() {
     canvas.replaceChildren();
@@ -58,14 +120,18 @@ function addPixels() {
     }
 }
 
-
-function savePixelArt() {
-    // Put the color of each pixel into a pixelData array
+function recordPixels() {
+    pixelData = []
     pixels = document.querySelectorAll(".pixel")
     pixels.forEach((pixel) => {
         pixelColor = pixel.style.backgroundColor
         pixelData.push(pixelColor)
     })
+}
+
+function savePixelArt() {
+    // Put the color of each pixel into a pixelData array
+    recordPixels()
     // Define data to send to server
     const dataToSend = {
         title: title,

@@ -58,7 +58,7 @@ def fetch_data():
         pixel_art = select_data(
             "SELECT * FROM pictures WHERE user_id = :user_id AND picture_id = :picture_id",
             user_id=session["user_id"],
-            picture_id=pixel_art_id
+            picture_id=pixel_art_id,
         )
         return jsonify(pixel_art)
 
@@ -67,3 +67,35 @@ def fetch_data():
             "SELECT * FROM pictures WHERE user_id = :id", id=session["user_id"]
         )
         return jsonify(user_pixel_art)
+
+
+@data_handling.route("/api/check_data", methods=["GET", "POST"])
+@login_required
+def check_data():
+    title = request.get_json()
+    pixel_art = select_data(
+        "SELECT * FROM pictures WHERE user_id = :user_id AND title = :title",
+        user_id=session["user_id"],
+        title=title,
+    )
+    if pixel_art:
+        return jsonify(True)
+    else:
+        return jsonify(False)
+
+
+@data_handling.route("/api/replace_data", methods=["GET", "POST"])
+@login_required
+def replace_data():
+    data = request.get_json()
+    title = data["title"]
+    pixel_data = data["pixelData"]
+    pixel_data_str = json.dumps(pixel_data)
+
+    update_db(
+        "UPDATE pictures SET pixeldata=:pixelData WHERE user_id=:user_id AND title=:title",
+        pixelData=pixel_data_str,
+        user_id = session["user_id"],
+        title = title
+    )
+    return jsonify("pixel art updated")
