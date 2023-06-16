@@ -43,16 +43,27 @@ def delete_data():
     update_db(
         "DELETE FROM pictures WHERE user_id = :user_id AND picture_id = :picture_id",
         user_id=session["user_id"],
-        picture_id=data
+        picture_id=data,
     )
 
     response = {"message": "Art deleted succesfully"}
     return jsonify(response)
 
-@data_handling.route("/api/fetch_data")
+
+@data_handling.route("/api/fetch_data", methods=["GET", "POST"])
 @login_required
 def fetch_data():
-    user_pixel_art = select_data(
-        "SELECT * FROM pictures WHERE user_id = :id", id=session["user_id"]
-    )
-    return jsonify(user_pixel_art)
+    if request.method == "POST":
+        pixel_art_id = request.get_json()
+        pixel_art = select_data(
+            "SELECT * FROM pictures WHERE user_id = :user_id AND picture_id = :picture_id",
+            user_id=session["user_id"],
+            picture_id=pixel_art_id
+        )
+        return jsonify(pixel_art)
+
+    else:
+        user_pixel_art = select_data(
+            "SELECT * FROM pictures WHERE user_id = :id", id=session["user_id"]
+        )
+        return jsonify(user_pixel_art)
