@@ -1,33 +1,32 @@
+// global variables
+let title = "";
 let gridSize = 32;
 let canvasSize = 600;
 let pixelSize = canvasSize / gridSize;
 let pixelData = [] // Array to store pixeldata for saving
 
-let canvas = document.querySelector("#canvas");
-let saveButton = document.querySelector("#save-button");
-
 // check for search paramaters
 let urlParams = new URLSearchParams(window.location.search)
 let pixelArtIdToLoad = urlParams.get("pixelArtId")
 
-
-// Define metadata
-let title = "myPixelArt";
-
 // Configure canvas 
+let canvas = document.querySelector("#canvas");
 canvas.style.width = `${canvasSize}px`
 canvas.style.height = `${canvasSize}px`
 canvas.style.gridTemplateRows = `repeat(${gridSize}, ${pixelSize}px)`
 canvas.style.gridTemplateColumns = `repeat(${gridSize}, ${pixelSize}px)`
 
-// Add pixels to canvas
-addPixels()
 
-// if the pixelArtId was present in the URL, we load the pixel art
+// if a pixelArtId is present in the URL, we load the pixel art, otherwise load empty canvas
 if (pixelArtIdToLoad) {
     fetchData(loadPixelArt, pixelArtIdToLoad)
 }
+else {
+    addPixels()
+}
 
+// Saves art on click of save button
+let saveButton = document.querySelector("#save-button");
 saveButton.addEventListener("click", savePixelArt);
 
 // Enable coloring pixels by clicking
@@ -44,6 +43,7 @@ canvas.addEventListener("mouseover", (e) => {
         e.target.style.backgroundColor = "#000000";
     }
 })
+
 
 // Define function to fill canvas with pixels
 function addPixels() {
@@ -91,7 +91,7 @@ function savePixelArt() {
     });
 }
 
-// Fetches a specific piece of pixel art from the server, and handles the data
+// Fetches a specific piece of pixel art from the server, and loads it
 function fetchData(handleDataFunction, pixelArtId) {
     fetch("/api/fetch_data", {
         method: 'POST',
