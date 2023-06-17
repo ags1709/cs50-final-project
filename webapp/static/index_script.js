@@ -5,9 +5,6 @@ let canvasSize = 600;
 let pixelSize = canvasSize / gridSize;
 let pixelData = [] // Array to store pixeldata for saving
 
-// check for search paramaters
-let urlParams = new URLSearchParams(window.location.search)
-let pixelArtIdToLoad = urlParams.get("pixelArtId")
 
 // Configure canvas 
 let canvas = document.querySelector("#canvas");
@@ -17,6 +14,9 @@ canvas.style.gridTemplateRows = `repeat(${gridSize}, ${pixelSize}px)`
 canvas.style.gridTemplateColumns = `repeat(${gridSize}, ${pixelSize}px)`
 
 
+// check for search paramaters
+let urlParams = new URLSearchParams(window.location.search)
+let pixelArtIdToLoad = urlParams.get("pixelArtId")
 // if a pixelArtId is present in the URL, load that pixel art, otherwise load empty canvas
 if (pixelArtIdToLoad) {
     // loads pixelArt into the canvas
@@ -61,6 +61,8 @@ canvas.addEventListener("mouseover", (e) => {
         e.target.style.backgroundColor = "#000000";
     }
 })
+
+
 
 
 // Function to interact with the server
