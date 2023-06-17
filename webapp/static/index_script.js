@@ -17,19 +17,23 @@ canvas.style.gridTemplateRows = `repeat(${gridSize}, ${pixelSize}px)`
 canvas.style.gridTemplateColumns = `repeat(${gridSize}, ${pixelSize}px)`
 
 
-// if a pixelArtId is present in the URL, we load that pixel art, otherwise load empty canvas
+// if a pixelArtId is present in the URL, load that pixel art, otherwise load empty canvas
 if (pixelArtIdToLoad) {
+    // loads pixelArt into the canvas
     serverInteraction("/api/fetch_data", pixelArtIdToLoad, loadPixelArt)
 }
 else {
+    // Load empty canvas
     addPixels()
 }
 
-
-// Saves art on click of save button
+// Save pixelart on button click
 let titleField = document.querySelector("#title")
 let saveButton = document.querySelector("#save-button");
 saveButton.addEventListener("click", (e) => {
+    // Store pixeldata of the pixelart
+    recordPixels()
+    // Make sure user inputted a title
     title = titleField.value
     if (!title) {
         // Throw error
@@ -56,10 +60,8 @@ canvas.addEventListener("mouseover", (e) => {
 })
 
 
-
+// Function to interact with the server
 function serverInteraction(routeToCall, dataToPost, dataProcessingFunction) {
-    // preFetchFunction()
-    console.log(dataToPost)
     fetch(routeToCall, {
         method: 'POST',
         headers: {
@@ -79,8 +81,9 @@ function serverInteraction(routeToCall, dataToPost, dataProcessingFunction) {
 
 //Loads a piece of pixel art into the canvas
 function loadPixelArt(data) {
+    // Parse data
     let pixelArtData = JSON.parse(data[0]["pixeldata"])
-    // configure canvas to fit the loaded pixelArt
+    // configure canvas to fit the pixelArt
     gridSize = data[0]["gridsize"]
     pixelSize = (canvasSize - 2) / gridSize
     canvas.style.gridTemplateColumns = `repeat(${gridSize}, ${pixelSize}px)`
@@ -97,14 +100,13 @@ function loadPixelArt(data) {
 }
 
 
+// saves new pixelart or updates existing pixelart
 function saveOrUpdate(bool) {
     if (bool) {
-        recordPixels()
-        replacementData = {title: title, pixelData: pixelData}
-        serverInteraction("/api/replace_data", replacementData, console.log)
+        updateData = {title: title, pixelData: pixelData}
+        serverInteraction("/api/update_data", updateData, console.log)
     }
     else {
-        recordPixels()
         saveData = { title: title, gridSize: gridSize, pixelData: pixelData }
         serverInteraction("/api/save_data", saveData, console.log)
     }
@@ -125,7 +127,7 @@ function addPixels() {
 }
 
 
-// Put pixels in pixel array for saving
+// Store pixelData of the pixelArt
 function recordPixels() {
     pixelData = []
     pixels = document.querySelectorAll(".pixel")

@@ -84,7 +84,7 @@ def check_data():
         return jsonify(False)
 
 
-@data_handling.route("/api/replace_data", methods=["GET", "POST"])
+@data_handling.route("/api/update_data", methods=["GET", "POST"])
 @login_required
 def replace_data():
     data = request.get_json()
