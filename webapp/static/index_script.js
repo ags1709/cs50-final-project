@@ -37,10 +37,13 @@ saveButton.addEventListener("click", (e) => {
     title = titleField.value
     if (!title) {
         // Throw error
+        showAlert("alert-danger", "Please enter title for pixelArt")
     }
     else {
         // save or update existing art depending on whether title exists in users gallery or not
         serverInteraction("/api/check_data", title, saveOrUpdate)
+        // Show success messsage
+        showAlert("alert-success", "Pixelart succesfully saved")
     }
 });
 
@@ -136,4 +139,24 @@ function recordPixels() {
         pixelData.push(pixelColor)
     })
     console.log("Pixels recorded")
+}
+
+// Create pop-up alerts
+function showAlert(category, message) {
+    // Create elements
+    alert = document.createElement("div")
+    button = document.createElement("button")
+    // Configure alert
+    alert.setAttribute('class', `alert ${category} alert-dismissible fade show`)
+    alert.setAttribute('role', 'alert')
+    alert.textContent = message
+    // Configure button
+    button.setAttribute('type', 'button')
+    button.setAttribute('class', 'btn-close')
+    button.setAttribute('data-bs-dismiss', 'alert')
+    button.setAttribute('aria-label', 'Close')
+    
+    contentContainer = document.getElementById("content-container")
+    contentContainer.appendChild(alert)
+    alert.appendChild(button)
 }
