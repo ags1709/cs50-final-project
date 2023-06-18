@@ -6,20 +6,24 @@
 {% block title %}Homepage{% endblock %}
 
 {% block main %}
-<h1>Gallery</h1>
+<h1 id="page-title">Gallery</h1>
 {% if not user_pixel_art %}
 <h4>Your gallery is currently empty. Go add some drawings!</h4>
 {% else %}
 <main id="gallery-container">
 {% for art in user_pixel_art %}
     <div class="canvas-containers">
-            <h6>{{ art["title"] }}</h6>
-            <div class="canvas"></div>
-            <div class="button-containers">
-                <button class="edit-button">Edit</button>
-                <button class="delete-button">Delete</button>
-            </div>
+        <div class="title-container">    
+            <h4>Title:</h4>
+            <h4>{{ art["title"] }}</h4>
+            <div id="filler"></div>
         </div>
+        <div class="canvas"></div>
+        <div class="button-containers">
+            <button class="edit-button button">Edit</button>
+            <button class="delete-button button">Delete</button>
+        </div>
+    </div>
 {% endfor %}
 {% endif %}
 </main>
