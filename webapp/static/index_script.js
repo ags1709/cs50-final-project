@@ -84,7 +84,7 @@ let grid = true
 let toggleGridButton = document.getElementById("toggleGridButton")
 toggleGridButton.addEventListener("click", (e) => {
     canvas.classList.toggle("grid-visible")
-    console.log(gridSize)
+    toggleGridButton.classList.toggle("active")
     })
 
 
@@ -128,7 +128,7 @@ function rebuildCanvas() {
 function clearCanvas() {
     pixels = document.querySelectorAll(".pixel")
     pixels.forEach(pixel => {
-        pixel.style.backgroundColor = ""
+        pixel.style.backgroundColor = "#ffffff"
     })
 }
 
@@ -159,7 +159,7 @@ function colorPixel(pixel) {
 
 // Color pixel white
 function erasePixel(pixel) {
-    pixel.style.backgroundColor = ""
+    pixel.style.backgroundColor = "#ffffff"
 }
 
 // Color pixel random color
@@ -226,7 +226,7 @@ function loadPixelArt(data) {
 // saves new pixelart or updates existing pixelart
 function saveOrUpdate(bool) {
     if (bool) {
-        updateData = {title: title, pixelData: pixelData}
+        updateData = {title: title, pixelData: pixelData, gridSize: gridSize}
         serverInteraction("/api/update_data", updateData, console.log)
     }
     else {
@@ -243,7 +243,7 @@ function addPixels() {
     canvas.replaceChildren();
     for (let i = 0; i < gridSize ** 2; i++) {
         const pixel = document.createElement("div");
-        pixel.style.backgroundColor = ""
+        pixel.style.backgroundColor = "#ffffff"
         pixel.classList.add("pixel");
         canvas.appendChild(pixel);
     }
@@ -276,7 +276,8 @@ function showAlert(category, message) {
     button.setAttribute('data-bs-dismiss', 'alert')
     button.setAttribute('aria-label', 'Close')
     
-    contentContainer = document.getElementById("content-container")
-    contentContainer.appendChild(alert)
+    body = document.querySelector("body")
+    // contentContainer.appendChild(alert)
+    body.appendChild(alert)
     alert.appendChild(button)
 }

@@ -88,13 +88,17 @@ def check_data():
 @login_required
 def replace_data():
     data = request.get_json()
+    DATE = date.today()
     title = data["title"]
     pixel_data = data["pixelData"]
     pixel_data_str = json.dumps(pixel_data)
+    gridSize = data["gridSize"]
 
     update_db(
-        "UPDATE pictures SET pixeldata=:pixelData WHERE user_id=:user_id AND title=:title",
+        "UPDATE pictures SET pixeldata=:pixelData, gridsize=:gridSize, date=:date WHERE user_id=:user_id AND title=:title",
         pixelData=pixel_data_str,
+        gridSize=gridSize,
+        date=DATE,
         user_id = session["user_id"],
         title = title
     )
