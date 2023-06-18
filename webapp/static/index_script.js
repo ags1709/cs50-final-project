@@ -92,6 +92,7 @@ toggleGridButton.addEventListener("click", (e) => {
 let resetButton = document.getElementById("resetButton")
 resetButton.addEventListener("click", (e) => {
     clearCanvas()
+    titleField.value = ""
 })
 
 
