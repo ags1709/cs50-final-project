@@ -45,7 +45,12 @@ function fetchData(processDataFunction) {
 // Load and configure all canvasses and fill them with the users pixel art
 function setUpPage(data) {
     // configures container that holds all canvasses
-    galleryContainer.style.gridTemplateColumns = `repeat(2, ${canvasSize}px)`;
+    if (arrayOfCanvas.length == 1) {
+        galleryContainer.style.gridTemplateColumns = `repeat(1, ${canvasSize}px)`;    
+    }
+    else {
+        galleryContainer.style.gridTemplateColumns = `repeat(2, ${canvasSize}px)`;
+    }
     galleryContainer.style.gridTemplateRows = `repeat(${data.length / 2}, ${canvasSize}px)`;
 
     // loop through all canvasses, configure them and load pixel art into them

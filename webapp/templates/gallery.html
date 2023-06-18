@@ -7,8 +7,11 @@
 
 {% block main %}
 <h1>Gallery</h1>
+{% if not user_pixel_art %}
+<h4>Your gallery is currently empty. Go add some drawings!</h4>
+{% else %}
 <main id="gallery-container">
-    {% for art in user_pixel_art %}
+{% for art in user_pixel_art %}
     <div class="canvas-containers">
             <h6>{{ art["title"] }}</h6>
             <div class="canvas"></div>
@@ -17,6 +20,7 @@
                 <button class="delete-button">Delete</button>
             </div>
         </div>
-    {% endfor %}
+{% endfor %}
+{% endif %}
 </main>
 {% endblock %}
