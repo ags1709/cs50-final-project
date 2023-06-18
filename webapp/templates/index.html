@@ -8,23 +8,26 @@
 {% block main %}
 <h1>This is the homepage</h1>
 <main id="content-container">
-        <div id="sidebar">
-        <input id="colorPicker" type="color">
-        <button id="color" class="draw-modes active">Draw Mode</button>
-        <button id="rainbow" class="draw-modes">Rainbow Mode</button>
-        <button id="erase" class="draw-modes">Eraser</button>
-        <!-- <button id="shade" class="draw-modes">Shading</button> -->
-        <!-- <button id="tint" class="draw-modes">lighten</button> -->
-       <div id="gridSizeSliderContainer">
-                <p id="gridSizeSliderText"></p>
-                <input type="range", min="1", max="54" id="gridSizeSlider">
-        </div> 
-        <button id="toggleGridButton">Toggle Grid</button>
-        <button id="resetButton">Reset</button>
-        <button id="save-button">Save Pixel-Art</button>
-        <input id="title" type="text" required placeholder="Pixel-Art Title">
+        <div id="sidebar-left">
+        <h4 id="sidebar-title">Drawing Options</h4>
+        <hr>
+        <label for="colorPicker">Color Picker</label>
+        <input id="colorPicker" type="color" class="sidebar-item">
+        <button id="color" class="draw-modes active sidebar-item">Draw Mode</button>
+        <button id="erase" class="draw-modes sidebar-item">Eraser</button>
+        <button id="rainbow" class="draw-modes sidebar-item">Rainbow Mode</button>
+        <hr>
+        <p id="gridSizeSliderText"></p>
+        <input type="range", min="1", max="54" id="gridSizeSlider" class="sidebar-item">
+        <button id="toggleGridButton" class="active sidebar-item">Toggle Grid</button>
+        <hr>
+        <button id="resetButton" class="sidebar-item">Reset</button>
+        <hr>
+        <input id="title" type="text" required placeholder="Please enter title" class="sidebar-item">
+        <button id="save-button" class="sidebar-item">Save Pixel-Art</button>
         </div>
         <div id="canvas" class="grid-visible"></div>
+        <div id="sidebar-right"></div>
 </main>
 {% endblock %}
 
