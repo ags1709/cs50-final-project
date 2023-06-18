@@ -1,22 +1,28 @@
 :root {
     --theme-dark: rgb(46, 48, 50);
+    --theme-even-darker: rgb(28, 30, 31);
     --theme-blue: rgb(69, 86, 125);
+    --theme-light-blue: rgb(0, 117, 255);
     --theme-red: rgb(190, 49, 68);
 }
 
 * {
     margin: 0;
+    box-sizing: content-box;
 }
 
 body {
     font-size: 16;
     text-align: center;
+    /* background-color: white; */
     background-color: var(--theme-dark);
     color: white;
 }
 
 h1 {
-    margin: 20px 0 20px 0;
+    margin: 20px 0 100px 0;
+    /* color: var(--theme-dark) */
+    color: white;
 }
 
 #content-container {
@@ -26,8 +32,9 @@ h1 {
 }
 
 #canvas {
-    border: 1px solid black;
+    border: 5px solid var(--theme-dark);
     display: grid;
+    /* padding: 10px; */
 }
 
 #sidebar-title {
@@ -39,10 +46,12 @@ h1 {
     flex-direction: column;
     align-items: center;
     width: 250px;
-    /* height: 550px; */
     padding: 20px;
-    background-color: var(--theme-blue);
+    background-color: var(--theme-dark);
+    border: 2px solid white;
+    /* border: 1px solid var(--theme-blue); */
     border-radius: 7px;
+    
 }
 
 #sidebar-right {
@@ -53,7 +62,7 @@ h1 {
 .sidebar-item {
     width: 150px;
     margin: 10px 0 0px 0;
-    border: 1px solid var(--theme-dark);
+    border: 1px solid white;
     border-radius: 7px;
     background-color: var(--theme-dark);
     color: white;
@@ -89,7 +98,10 @@ h1 {
 
 hr {
     width: 100%;
-    background-color: black;
+    height: 1px;
+    background-color: white;
+    color: white;
+    border: none;
 }
 
 .grid-visible .pixel {
@@ -97,8 +109,8 @@ hr {
 }
 .active {
     background-color: var(--theme-dark);
-    color: white;
-    border: 1px solid white
+    color: var(--theme-light-blue);
+    border: 1px solid var(--theme-light-blue)
 }
 
 .alert {

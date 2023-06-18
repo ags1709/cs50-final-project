@@ -113,7 +113,7 @@ function configureCanvas() {
     canvas.replaceChildren()
     canvas.style.width = `${canvasSize}px`
     canvas.style.height = `${canvasSize}px`
-    pixelSize = (canvasSize - 2) / gridSize;
+    pixelSize = (canvasSize) / gridSize;
     canvas.style.gridTemplateRows = `repeat(${gridSize}, ${pixelSize}px)`
     canvas.style.gridTemplateColumns = `repeat(${gridSize}, ${pixelSize}px)`
 }
@@ -203,7 +203,7 @@ function loadPixelArt(data) {
     let pixelArtData = JSON.parse(data[0]["pixeldata"])
     // configure canvas to fit the pixelArt
     gridSize = data[0]["gridsize"]
-    pixelSize = (canvasSize - 2) / gridSize
+    pixelSize = (canvasSize) / gridSize
     canvas.style.gridTemplateColumns = `repeat(${gridSize}, ${pixelSize}px)`
     canvas.style.gridTemplateRows = `repeat(${gridSize}, ${pixelSize}px)`
     // Configures grid size slider and its text
