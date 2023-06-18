@@ -6,11 +6,25 @@
 {% block title %}Homepage{% endblock %}
 
 {% block main %}
+<h1>This is the homepage</h1>
 <main id="content-container">
-        <h1>This is the homepage</h1>
-        <div id="canvas"></div>
+        <div id="sidebar">
+        <input id="colorPicker" type="color">
+        <button id="color" class="draw-modes active">Draw Mode</button>
+        <button id="rainbow" class="draw-modes">Rainbow Mode</button>
+        <button id="erase" class="draw-modes">Eraser</button>
+        <!-- <button id="shade" class="draw-modes">Shading</button> -->
+        <!-- <button id="tint" class="draw-modes">lighten</button> -->
+       <div id="gridSizeSliderContainer">
+                <p id="gridSizeSliderText"></p>
+                <input type="range", min="1", max="54" id="gridSizeSlider">
+        </div> 
+        <button id="toggleGridButton">Toggle Grid</button>
+        <button id="resetButton">Reset</button>
         <button id="save-button">Save Pixel-Art</button>
         <input id="title" type="text" required placeholder="Pixel-Art Title">
+        </div>
+        <div id="canvas" class="grid-visible"></div>
 </main>
 {% endblock %}
 
