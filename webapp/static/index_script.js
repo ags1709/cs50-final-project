@@ -202,13 +202,15 @@ function loadPixelArt(data) {
     let pixelArtData = JSON.parse(data[0]["pixeldata"])
     // configure canvas to fit the pixelArt
     gridSize = data[0]["gridsize"]
-    console.log(gridSize)
     pixelSize = (canvasSize - 2) / gridSize
     canvas.style.gridTemplateColumns = `repeat(${gridSize}, ${pixelSize}px)`
     canvas.style.gridTemplateRows = `repeat(${gridSize}, ${pixelSize}px)`
     // Configures grid size slider and its text
     gridSizeSlider.value = gridSize;
     gridSizeSliderText.textContent = `Gridsize: ${gridSizeSlider.value} x ${gridSizeSlider.value}`
+    // Put title in title field
+    title = data[0]["title"]
+    titleField.value = title
     // load the pixel art into the canvas
     canvas.replaceChildren();
     for (let i = 0; i < pixelArtData.length; i++) {
