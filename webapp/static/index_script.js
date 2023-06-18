@@ -1,25 +1,22 @@
-// global variables
+// Global variables
 let title = "";
 let gridSize = 32;
 let canvasSize = 600;
-let pixelSize = canvasSize / gridSize;
+let pixelSize;
 let pixelData = [] // Array to store pixeldata for saving
 
 
 // Configure canvas 
 let canvas = document.querySelector("#canvas");
-canvas.style.width = `${canvasSize}px`
-canvas.style.height = `${canvasSize}px`
-canvas.style.gridTemplateRows = `repeat(${gridSize}, ${pixelSize}px)`
-canvas.style.gridTemplateColumns = `repeat(${gridSize}, ${pixelSize}px)`
+configureCanvas()
 
 
-// check for search paramaters
+// Check for search paramaters
 let urlParams = new URLSearchParams(window.location.search)
 let pixelArtIdToLoad = urlParams.get("pixelArtId")
-// if a pixelArtId is present in the URL, load that pixel art, otherwise load empty canvas
+// If a pixelArtId is present in the URL, load that pixel art, otherwise load empty canvas
 if (pixelArtIdToLoad) {
-    // loads pixelArt into the canvas
+    // Loads pixelArt into the canvas
     serverInteraction("/api/fetch_data", pixelArtIdToLoad, loadPixelArt)
 }
 else {
@@ -40,30 +37,145 @@ saveButton.addEventListener("click", (e) => {
         showAlert("alert-danger", "Please enter title for pixelArt")
     }
     else {
-        // save or update existing art depending on whether title exists in users gallery or not
+        // Save or update existing art depending on whether title exists in users gallery or not
         serverInteraction("/api/check_data", title, saveOrUpdate)
         // Show success messsage
         showAlert("alert-success", "Pixelart succesfully saved")
     }
 });
 
+let drawMode = "color"
 // Enable coloring pixels by clicking
+let drawingColor = "#000000"
 canvas.addEventListener("mousedown", (e) => {
     e.preventDefault()
     if (e.target.classList.contains("pixel")) {
-        e.target.style.backgroundColor = "#000000";
+        drawPixel(e.target)
     }
 })
 // Enable continous painting
 canvas.addEventListener("mouseover", (e) => {
     e.preventDefault()
     if (e.buttons === 1 && e.target.classList.contains("pixel")) {
-        e.target.style.backgroundColor = "#000000";
+        drawPixel(e.target)
     }
+})
+// Enable color selection
+let colorPicker = document.getElementById("colorPicker")
+colorPicker.addEventListener("change", (e) => {
+    drawingColor = colorPicker.value
+})
+
+// Make draw modes mutually exclusive
+let drawModeButtons = document.querySelectorAll(".draw-modes")
+drawModeButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+        drawModeButtons.forEach((btn) => {
+            btn.classList.remove("active")
+        })
+        e.target.classList.add("active")
+
+        setDrawMode(e.target.id)
+    })
+})
+
+//  Add functionality to toggle grid button
+let grid = true
+let toggleGridButton = document.getElementById("toggleGridButton")
+toggleGridButton.addEventListener("click", (e) => {
+    canvas.classList.toggle("grid-visible")
+    console.log(gridSize)
+    })
+
+
+// Add functionality to reset button
+let resetButton = document.getElementById("resetButton")
+resetButton.addEventListener("click", (e) => {
+    clearCanvas()
 })
 
 
+let gridSizeSlider = document.getElementById("gridSizeSlider")
+let gridSizeSliderText = document.getElementById("gridSizeSliderText")
+gridSizeSlider.value = gridSize;
+gridSizeSliderText.textContent = `Gridsize: ${gridSizeSlider.value} x ${gridSizeSlider.value}`
 
+gridSizeSlider.addEventListener("input", (e) => {
+    gridSizeSliderText.textContent = `Gridsize: ${gridSizeSlider.value} x ${gridSizeSlider.value}`
+    gridSize = gridSizeSlider.value
+    rebuildCanvas()
+})
+
+
+// Configure canvas depending on canvas size and gridsize
+function configureCanvas() {
+    canvas.replaceChildren()
+    canvas.style.width = `${canvasSize}px`
+    canvas.style.height = `${canvasSize}px`
+    pixelSize = (canvasSize - 2) / gridSize;
+    canvas.style.gridTemplateRows = `repeat(${gridSize}, ${pixelSize}px)`
+    canvas.style.gridTemplateColumns = `repeat(${gridSize}, ${pixelSize}px)`
+}
+
+// Rebuild the canvas
+function rebuildCanvas() {
+    configureCanvas()
+    addPixels()
+}
+
+// Reset canvas
+function clearCanvas() {
+    pixels = document.querySelectorAll(".pixel")
+    pixels.forEach(pixel => {
+        pixel.style.backgroundColor = ""
+    })
+}
+
+function setDrawMode(mode) {
+    drawMode = mode;
+}
+
+function drawPixel(pixel) {
+    switch (drawMode) {
+        case "color":
+            colorPixel(pixel);
+            break;
+        case "erase":
+            erasePixel(pixel);
+            break;
+        case "rainbow":
+            rainbowPixel(pixel);
+            break;
+        default:
+            break;
+    }
+}
+
+// Color pixel selected color
+function colorPixel(pixel) {
+    pixel.style.backgroundColor = drawingColor;
+}
+
+// Color pixel white
+function erasePixel(pixel) {
+    pixel.style.backgroundColor = ""
+}
+
+// Color pixel random color
+function rainbowPixel(pixel) {
+    color = getRandomColor()
+    pixel.style.backgroundColor = color
+}
+
+// Generate random color
+function getRandomColor() {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
 
 // Function to interact with the server
 function serverInteraction(routeToCall, dataToPost, dataProcessingFunction) {
@@ -90,15 +202,18 @@ function loadPixelArt(data) {
     let pixelArtData = JSON.parse(data[0]["pixeldata"])
     // configure canvas to fit the pixelArt
     gridSize = data[0]["gridsize"]
+    console.log(gridSize)
     pixelSize = (canvasSize - 2) / gridSize
     canvas.style.gridTemplateColumns = `repeat(${gridSize}, ${pixelSize}px)`
     canvas.style.gridTemplateRows = `repeat(${gridSize}, ${pixelSize}px)`
+    // Configures grid size slider and its text
+    gridSizeSlider.value = gridSize;
+    gridSizeSliderText.textContent = `Gridsize: ${gridSizeSlider.value} x ${gridSizeSlider.value}`
     // load the pixel art into the canvas
     canvas.replaceChildren();
     for (let i = 0; i < pixelArtData.length; i++) {
         const pixel = document.createElement("div");
         pixel.style.backgroundColor = `${pixelArtData[i]}`
-        pixel.style.border = "1px solid black"
         pixel.classList.add("pixel")
         canvas.appendChild(pixel);
     }
@@ -120,13 +235,13 @@ function saveOrUpdate(bool) {
 
 // Fill canvas with pixels
 function addPixels() {
+    // pixelData = []; // Reset pixel data
+    
     canvas.replaceChildren();
-    pixelData = []; // Reset pixel data
-
     for (let i = 0; i < gridSize ** 2; i++) {
         const pixel = document.createElement("div");
+        pixel.style.backgroundColor = ""
         pixel.classList.add("pixel");
-        pixel.style.backgroundColor = "#FFFFFF"
         canvas.appendChild(pixel);
     }
 }
