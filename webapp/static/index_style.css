@@ -1,6 +1,6 @@
 #content-container {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     justify-content: center;
     align-items: center;
 }
@@ -10,7 +10,30 @@
     display: grid;
 }
 
-.pixel {
+/* .pixel {
 
     border:1px solid black
+} */
+.grid-visible .pixel {
+    border: 1px solid black;
+}
+
+#sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.active {
+    background-color: black;
+    color: white;
+}
+
+#gridSizeSliderContainer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+#gridSizeSliderText {
+    margin-bottom: 5px;
 }
