@@ -44,9 +44,15 @@ saveButton.addEventListener("click", (e) => {
     }
 });
 
+// Enable color selection
+let colorPicker = document.getElementById("colorPicker")
+let drawingColor = colorPicker.value
+colorPicker.addEventListener("change", (e) => {
+    drawingColor = colorPicker.value
+})
 let drawMode = "color"
+
 // Enable coloring pixels by clicking
-let drawingColor = "#000000"
 canvas.addEventListener("mousedown", (e) => {
     e.preventDefault()
     if (e.target.classList.contains("pixel")) {
@@ -59,11 +65,6 @@ canvas.addEventListener("mouseover", (e) => {
     if (e.buttons === 1 && e.target.classList.contains("pixel")) {
         drawPixel(e.target)
     }
-})
-// Enable color selection
-let colorPicker = document.getElementById("colorPicker")
-colorPicker.addEventListener("change", (e) => {
-    drawingColor = colorPicker.value
 })
 
 // Make draw modes mutually exclusive
