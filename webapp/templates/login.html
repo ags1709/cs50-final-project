@@ -1,8 +1,10 @@
 {% extends "layout.html" %}
 
+{% block stylesheets %}<link rel="stylesheet" href="../static/auth_style.css">{% endblock %}
 {% block title %}Login{% endblock %}
 
 {% block main %}
+<h1 id="title">Login</h1>
 <form action="/login" method="post">
     <div class="container mt-5 mb-3">
         <div class="row justify-content-center">

@@ -2,6 +2,7 @@
     --theme-dark: rgb(46, 48, 50);
     --theme-even-darker: rgb(28, 30, 31);
     --theme-blue: rgb(69, 86, 125);
+    --theme-light-blue: rgb(0, 117, 255);
     --theme-red: rgb(190, 49, 68);
     --theme-brown: rgb(150, 111, 51)
 }
@@ -12,12 +13,13 @@
 
 body {
     text-align: center;
-    background-color: white;
-    color: var(--theme-dark);
+    background-color: var(--theme-dark);
+    color: white;
 }
 
 #page-title {
     margin: 20px 0 40px 0;
+    color: white;
 }
 
 #gallery-container {
@@ -38,7 +40,6 @@ body {
     height: 600px;
     width: 600px;
     border: 5px solid var(--theme-dark);
-    box-sizing: ;
 }
 
 .title-container {
@@ -61,7 +62,7 @@ body {
 .button {
     height: 35px;
     width: 80px;
-    border: 3px solid var(--theme-dark);
+    border: 2px solid var(--theme-light-blue);
     border-radius: 5px;
     background-color: var(--theme-dark);
     color: white;

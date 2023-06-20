@@ -1,0 +1,29 @@
+:root {
+    --theme-dark: rgb(46, 48, 50);
+    --theme-even-darker: rgb(28, 30, 31);
+    --theme-blue: rgb(69, 86, 125);
+    --theme-light-blue: rgb(0, 117, 255);
+}
+
+body {
+    background-color: var(--theme-dark);
+    color: white;
+}
+
+#title {
+    margin: 20px 0 0 0;
+    text-align: center;
+}
+
+input {
+}
+
+.alert {
+    width: 800px;
+    margin: 40px auto 40px auto;
+}
+
+hr {
+    height: 1px;
+    background-color: var(--theme-light-blue);
+}
