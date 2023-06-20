@@ -72,7 +72,9 @@ def register():
                 date=DATE,
             )
             # Redirect user to homepage and flash success message
+            user = select_data("SELECT * FROM users WHERE username=:username", username=username)
             flash("Account created", category="success")
+            session["user_id"] = user[0]["user_id"]
             return redirect("/")
         # If error, redirect back to register page
         return redirect("/register")
