@@ -1,12 +1,9 @@
 // Global variables
 let canvasSize = 600;
 
-let galleryContainer = document.querySelector("#gallery-container");
-let deleteButtons = document.querySelectorAll(".delete-button")
-let editButtons = document.querySelectorAll(".edit-button")
-let arrayOfCanvas = Array.from(document.querySelectorAll(".canvas"))
 
 // Implement functionality for delete buttons
+let deleteButtons = document.querySelectorAll(".delete-button")
 deleteButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
         deleteCanvas(e)
@@ -14,6 +11,7 @@ deleteButtons.forEach((button) => {
 })
 
 // Implement functionality for edit buttons
+let editButtons = document.querySelectorAll(".edit-button")
 editButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
         canvas = e.target.parentNode.previousElementSibling;
@@ -23,6 +21,8 @@ editButtons.forEach((button) => {
 })
 
 // Set up and load all the canvasses and the art to be displayed in them
+let galleryContainer = document.querySelector("#gallery-container");
+let arrayOfCanvas = Array.from(document.querySelectorAll(".canvas"))
 fetchData(setUpPage)
 
 

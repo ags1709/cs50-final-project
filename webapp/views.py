@@ -3,12 +3,13 @@ from .helpers import login_required
 from .db import select_data, update_db
 views = Blueprint("views", __name__)
 
-
+# Render index page
 @views.route("/")
 @login_required
 def index():
     return render_template("index.html")
 
+# Render gallery and pass in users pixel art
 @views.route("/gallery")
 @login_required
 def user_gallery():

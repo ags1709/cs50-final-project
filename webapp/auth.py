@@ -7,30 +7,32 @@ from .helpers import login_required
 auth = Blueprint("auth", __name__)
 
 
+# Route for logging users in.
 @auth.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
+        # Get data from form
         username = request.form.get("username")
         password = request.form.get("password")
-        user = select_data("SELECT * FROM users WHERE username = :username", username=username)
-
+        # Select the user if it exists
+        user = select_data(
+            "SELECT * FROM users WHERE username = :username", username=username
+        )
         # Validate input
         if not username:
-            # Throw error
             flash("Enter Username", category="error")
         elif not password:
-            # Throw error
             flash("Enter Password", category="error")
         elif not user:
-            # Throw error
             flash("User does not exist", category="error")
         elif not check_password_hash(user[0]["hash"], password):
-            # Throw error
             flash("Incorrect password", category="error")
         else:
+            # Log user in and redirect them
             flash("Logged in", category="success")
             session["user_id"] = user[0]["user_id"]
             return redirect("/")
+        # If invalid input, redirect back to login
         return redirect("/login")
     else:
         return render_template("login.html")
@@ -47,21 +49,16 @@ def register():
         password_hash = generate_password_hash(password)
         # Validate users input, and if invalid, throw error
         if not username:
-            # Throw error
             flash("Please enter username", category="error")
         elif select_data(
             "SELECT * FROM users WHERE username = :username", username=username
         ):
-            # Throw error
             flash("Username taken", category="error")
         elif not password:
-            # Throw error
             flash("Please enter password", category="error")
         elif not confirmation:
-            # Throw error
             flash("Please confirm password", category="error")
         elif password != confirmation:
-            # Throw error
             flash("Confirmation does not match password", category="error")
         # Insert user into database
         else:
@@ -72,7 +69,9 @@ def register():
                 date=DATE,
             )
             # Redirect user to homepage and flash success message
-            user = select_data("SELECT * FROM users WHERE username=:username", username=username)
+            user = select_data(
+                "SELECT * FROM users WHERE username=:username", username=username
+            )
             flash("Account created", category="success")
             session["user_id"] = user[0]["user_id"]
             return redirect("/")

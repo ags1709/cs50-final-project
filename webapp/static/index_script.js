@@ -67,7 +67,7 @@ canvas.addEventListener("mouseover", (e) => {
     }
 })
 
-// Make draw modes mutually exclusive
+// Make draw modes mutually exclusive and set the draw-mode
 let drawModeButtons = document.querySelectorAll(".draw-modes")
 drawModeButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
@@ -96,12 +96,11 @@ resetButton.addEventListener("click", (e) => {
     titleField.value = ""
 })
 
-
+// Configure and add functionality to the grid size slider
 let gridSizeSlider = document.getElementById("gridSizeSlider")
 let gridSizeSliderText = document.getElementById("gridSizeSliderText")
 gridSizeSlider.value = gridSize;
 gridSizeSliderText.textContent = `Gridsize: ${gridSizeSlider.value} x ${gridSizeSlider.value}`
-
 gridSizeSlider.addEventListener("input", (e) => {
     gridSizeSliderText.textContent = `Gridsize: ${gridSizeSlider.value} x ${gridSizeSlider.value}`
     gridSize = gridSizeSlider.value
@@ -132,11 +131,11 @@ function clearCanvas() {
         pixel.style.backgroundColor = "#ffffff"
     })
 }
-
+// Change drawmode
 function setDrawMode(mode) {
     drawMode = mode;
 }
-
+// Change pixel depending on drawmode
 function drawPixel(pixel) {
     switch (drawMode) {
         case "color":
